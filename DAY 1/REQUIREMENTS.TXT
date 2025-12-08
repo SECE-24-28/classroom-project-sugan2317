@@ -1,0 +1,103 @@
+🟩 1. MongoDB (Database Layer)
+
+A NoSQL document-based database.
+
+✔ Core Things to Learn
+
+Documents, Collections
+
+CRUD operations (find, insert, update, delete)
+
+MongoDB Atlas (cloud)
+
+Schemas & Validation
+
+Aggregation Pipeline
+
+✔ Tools / Libraries
+
+Mongoose (Schema + validation + middleware)
+
+MongoDB Compass (GUI)
+
+🟦 2. Express.js (Backend Framework)
+
+The backend framework for building REST APIs.
+
+✔ Core Concepts
+
+Routing
+
+Middleware
+
+Request & Response lifecycle
+
+Error handling
+
+JWT Authentication
+
+File uploads (Multer)
+
+API versioning
+
+✔ Useful Packages
+
+cors
+
+dotenv
+
+bcrypt
+
+jsonwebtoken
+
+multer
+
+cookie-parser
+
+🟩 3. React.js (Frontend)
+✔ Core Concepts
+
+Components (functional)
+
+Props & State
+
+Hooks: useState, useEffect, useRef, useContext
+
+React Router
+
+Axios / Fetch
+
+Conditional rendering
+
+Forms Handling
+
+✔ Extra Topics
+
+Redux or Zustand (state management)
+
+Tailwind CSS or Material UI
+
+React Query (server state)
+
+Context API
+
+✔ Build Tools
+
+Vite
+
+CRA (older)
+
+🟩 4. Node.js (Runtime Environment)
+✔ Things to Learn
+
+Event Loop
+
+Async/Await, Promises
+
+File System
+
+Streams
+
+Process & Cluster
+
+npm / yarn package manager

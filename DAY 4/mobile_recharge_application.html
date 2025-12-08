@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RechargeHub - Fast & Easy Mobile Recharge</title>
+    <style>
+        /* ========== BASIC RESET ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Smooth scrolling for entire page */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ========== NAVBAR (UPGRADED) ========== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Changed from fixed to sticky */
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav-menu li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        /* Hover effect on menu items */
+        .nav-menu li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .search-btn {
+            padding: 10px 18px;
+            background: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* ========== HERO SECTION (UPGRADED) ========== */
+        .hero {
+            min-height: 90vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background circles */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 900px;
+            padding: 40px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero p {
+            font-size: 22px;
+            margin-bottom: 45px;
+            opacity: 0.95;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            animation: fadeIn 0.8s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .btn-primary {
+            padding: 16px 45px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            padding: 16px 45px;
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* ========== RECHARGE FORM SECTION (MAJOR UPGRADE) ========== */
+        .recharge-section {
+            padding: 100px 50px;
+            background: linear-gradient(to bottom, #f7fafc, #edf2f7);
+        }
+
+        .recharge-section h2 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #718096;
+            margin-bottom: 60px;
+        }
+
+        .recharge-form {
+            max-width: 650px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .recharge-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 15px;
+        }
+
+        /* Input field with icon space */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            font-size: 18px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px 15px 15px 45px; /* Extra left padding for icon */
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+        }
+
+        /* Focus effect - input glows when clicked */
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Error message styling */
+        .error-msg {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Error state for inputs */
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #e53e3e;
+            background: #fff5f5;
+        }
+
+        .btn-recharge {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-recharge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-recharge:active {
+            transform: translateY(0);
+        }
+
+        /* ========== PLANS SECTION (UPGRADED) ========== */
+        .plans-section {
+            padding: 100px 50px;
+            background: white;
+        }
+
+        .plans-section h2 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .plans-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 60px;
+        }
+
+        .plan-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 280px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Card hover effect - lifts up */
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+            background: white;
+        }
+
+        .plan-amount {
+            font-size: 48px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .plan-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .plan-details {
+            margin-bottom: 25px;
+            color: #4a5568;
+        }
+
+        .plan-details p {
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .plan-details strong {
+            color: #2d3748;
+        }
+
+        .btn-select-plan {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-select-plan:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        /* ========== SUCCESS POPUP (UPGRADED) ========== */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInBg 0.3s ease;
+        }
+
+        @keyframes fadeInBg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .popup-content {
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            from { 
+                opacity: 0;
+                transform: scale(0.8) translateY(-30px);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .popup-content h3 {
+            color: #10b981;
+            font-size: 32px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .popup-details {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .popup-content p {
+            font-size: 18px;
+            margin: 12px 0;
+            color: #4a5568;
+        }
+
+        .popup-content strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .btn-close {
+            padding: 14px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ========== FOOTER (UPGRADED) ========== */
+        .footer {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 15px;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 768px) {
+            /* Navbar adjustments */
+            .navbar {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-menu {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            /* Hero section */
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                padding: 14px 30px;
+            }
+
+            /* Form section */
+            .recharge-section {
+                padding: 60px 20px;
+            }
+
+            .recharge-form {
+                padding: 30px 20px;
+            }
+
+            .recharge-section h2 {
+                font-size: 32px;
+            }
+
+            /* Plans section */
+            .plans-section {
+                padding: 60px 20px;
+            }
+
+            .plans-section h2 {
+                font-size: 32px;
+            }
+
+            .plans-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .plan-card {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            /* Popup */
+            .popup-content {
+                margin: 20px;
+                padding: 35px 25px;
+            }
+
+            .popup-content h3 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar">
+        <div class="logo">💳 RechargeHub</div>
+        <ul class="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#recharge">Recharge</a></li>
+            <li><a href="#plans">Plans</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><button class="search-btn">🔍</button></li>
+        </ul>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Fast & Easy Mobile Recharge</h1>
+            <p>Recharge prepaid numbers instantly with secure online payments. Quick, safe, and hassle-free!</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollToRecharge()">Recharge Now</button>
+                <button class="btn-secondary" onclick="scrollToPlans()">View Plans</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RECHARGE FORM SECTION ========== -->
+    <section class="recharge-section" id="recharge">
+        <h2>Recharge Your Mobile</h2>
+        <p class="section-subtitle">Fill in the details below to recharge your prepaid number instantly</p>
+        
+        <form class="recharge-form" id="rechargeForm">
+            <!-- Mobile Number -->
+            <div class="form-group">
+                <label>📱 Mobile Number</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">📱</span>
+                    <input type="text" id="mobileNumber" placeholder="Enter 10 digit number" maxlength="10">
+                </div>
+                <span class="error-msg" id="mobileError">Please enter a valid 10 digit mobile number</span>
+            </div>
+            
+            <!-- Operator -->
+            <div class="form-group">
+                <label>📡 Operator</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">📡</span>
+                    <select id="operator">
+                        <option value="">Select Operator</option>
+                        <option value="airtel">Airtel</option>
+                        <option value="jio">Jio</option>
+                        <option value="vi">Vi (Vodafone Idea)</option>
+                        <option value="bsnl">BSNL</option>
+                    </select>
+                </div>
+                <span class="error-msg" id="operatorError">Please select an operator</span>
+            </div>
+
+            <!-- Circle / State -->
+            <div class="form-group">
+                <label>🗺️ Circle / State</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🗺️</span>
+                    <select id="circle">
+                        <option value="">Select Circle</option>
+                        <option value="delhi">Delhi</option>
+                        <option value="mumbai">Mumbai</option>
+                        <option value="karnataka">Karnataka</option>
+                        <option value="tamilnadu">Tamil Nadu</option>
+                        <option value="maharashtra">Maharashtra</option>
+                        <option value="westbengal">West Bengal</option>
+                        <option value="gujarat">Gujarat</option>
+                    </select>
+                </div>
+                <span class="error-msg" id="circleError">Please select a circle</span>
+            </div>
+
+            <!-- Amount -->
+            <div class="form-group">
+                <label>💰 Amount</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">₹</span>
+                    <input type="number" id="amount" placeholder="Enter recharge amount">
+                </div>
+                <span class="error-msg" id="amountError">Please enter recharge amount</span>
+            </div>
+
+            <button type="submit" class="btn-recharge">💳 Recharge Now</button>
+        </form>
+    </section>
+
+    <!-- ========== PLANS SECTION ========== -->
+    <section class="plans-section" id="plans">
+        <h2>Popular Recharge Plans</h2>
+        <p class="section-subtitle">Choose from our most popular prepaid plans</p>
+        
+        <div class="plans-container">
+            <!-- Plan 1 -->
+            <div class="plan-card" onclick="selectPlan(199)">
+                <span class="plan-badge">POPULAR</span>
+                <div class="plan-amount">₹199</div>
+                <div class="plan-details">
+                    <p><strong>Validity:</strong> 28 Days</p>
+                    <p><strong>Data:</strong> 1.5GB/Day</p>
+                    <p><strong>Calls:</strong> Unlimited</p>
+                    <p><strong>SMS:</strong> 100/Day</p>
+                </div>
+                <button class="btn-select-plan">Select Plan</button>
+            </div>
+
+            <!-- Plan 2 -->
+            <div class="plan-card" onclick="selectPlan(399)">
+                <span class="plan-badge">BEST VALUE</span>
+                <div class="plan-amount">₹399</div>
+                <div class="plan-details">
+                    <p><strong>Validity:</strong> 56 Days</p>
+                    <p><strong>Data:</strong> 2GB/Day</p>
+                    <p><strong>Calls:</strong> Unlimited</p>
+                    <p><strong>SMS:</strong> 100/Day</p>
+                </div>
+                <button class="btn-select-plan">Select Plan</button>
+            </div>
+
+            <!-- Plan 3 -->
+            <div class="plan-card" onclick="selectPlan(599)">
+                <span class="plan-badge">RECOMMENDED</span>
+                <div class="plan-amount">₹599</div>
+                <div class="plan-details">
+                    <p><strong>Validity:</strong> 84 Days</p>
+                    <p><strong>Data:</strong> 2GB/Day</p>
+                    <p><strong>Calls:</strong> Unlimited</p>
+                    <p><strong>SMS:</strong> 100/Day</p>
+                </div>
+                <button class="btn-select-plan">Select Plan</button>
+            </div>
+
+            <!-- Plan 4 -->
+            <div class="plan-card" onclick="selectPlan(999)">
+                <span class="plan-badge">YEARLY</span>
+                <div class="plan-amount">₹999</div>
+                <div class="plan-details">
+                    <p><strong>Validity:</strong> 365 Days</p>
+                    <p><strong>Data:</strong> 2.5GB/Day</p>
+                    <p><strong>Calls:</strong> Unlimited</p>
+                    <p><strong>SMS:</strong> 100/Day</p>
+                </div>
+                <button class="btn-select-plan">Select Plan</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <p>© 2025 RechargeHub — All rights reserved. | Secure Payments | 24/7 Support</p>
+    </footer>
+
+    <!-- ========== SUCCESS POPUP ========== -->
+    <div class="popup" id="successPopup">
+        <div class="popup-content">
+            <div class="success-icon">✅</div>
+            <h3>Recharge Successful!</h3>
+            <div class="popup-details">
+                <p><strong>Mobile Number:</strong></p>
+                <p id="popupMobile" style="font-size: 24px; color: #667eea;">-</p>
+                <p><strong>Amount:</strong></p>
+                <p style="font-size: 28px; color: #10b981; font-weight: 700;">₹<span id="popupAmount">0</span></p>
+            </div>
+            <button class="btn-close" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        // ========== SMOOTH SCROLL FUNCTIONS ==========
+        function scrollToRecharge() {
+            document.getElementById('recharge').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function scrollToPlans() {
+            document.getElementById('plans').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // ========== SELECT PLAN FUNCTION ==========
+        // This function runs when user clicks a plan card
+        function selectPlan(amount) {
+            // Set the amount in the form
+            document.getElementById('amount').value = amount;
+            
+            // Remove error styling if it exists
+            document.getElementById('amount').classList.remove('error');
+            document.getElementById('amountError').classList.remove('show');
+            
+            // Scroll to the recharge form
+            scrollToRecharge();
+            
+            // Add a little highlight effect to the amount field
+            const amountField = document.getElementById('amount');
+            amountField.style.borderColor = '#10b981';
+            amountField.style.background = '#f0fdf4';
+            
+            // Remove highlight after 2 seconds
+            setTimeout(() => {
+                amountField.style.borderColor = '#e2e8f0';
+                amountField.style.background = '#f7fafc';
+            }, 2000);
+        }
+
+        // ========== REAL-TIME MOBILE NUMBER VALIDATION ==========
+        // This checks mobile number as user types
+        document.getElementById('mobileNumber').addEventListener('input', function() {
+            const mobile = this.value;
+            const errorMsg = document.getElementById('mobileError');
+            
+            // Only show error if user has started typing
+            if (mobile.length > 0 && mobile.length !== 10) {
+                this.classList.add('error');
+                errorMsg.classList.add('show');
+            } else {
+                this.classList.remove('error');
+                errorMsg.classList.remove('show');
+            }
+        });
+
+        // ========== FORM SUBMISSION WITH VALIDATION ==========
+        document.getElementById('rechargeForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop form from refreshing page
+            
+            // Get all form values
+            const mobile = document.getElementById('mobileNumber').value;
+            const operator = document.getElementById('operator').value;
+            const circle = document.getElementById('circle').value;
+            const amount = document.getElementById('amount').value;
+            
+            // Flag to check if form is valid
+            let isValid = true;
+            
+            // ===== VALIDATE MOBILE NUMBER =====
+            if (mobile.length !== 10) {
+                document.getElementById('mobileNumber').classList.add('error');
+                document.getElementById('mobileError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('mobileNumber').classList.remove('error');
+                document.getElementById('mobileError').classList.remove('show');
+            }
+            
+            // ===== VALIDATE OPERATOR =====
+            if (!operator) {
+                document.getElementById('operator').classList.add('error');
+                document.getElementById('operatorError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('operator').classList.remove('error');
+                document.getElementById('operatorError').classList.remove('show');
+            }
+            
+            // ===== VALIDATE CIRCLE =====
+            if (!circle) {
+                document.getElementById('circle').classList.add('error');
+                document.getElementById('circleError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('circle').classList.remove('error');
+                document.getElementById('circleError').classList.remove('show');
+            }
+            
+            // ===== VALIDATE AMOUNT =====
+            if (!amount || amount <= 0) {
+                document.getElementById('amount').classList.add('error');
+                document.getElementById('amountError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('amount').classList.remove('error');
+                document.getElementById('amountError').classList.remove('show');
+            }
+            
+            // ===== IF ALL VALID, SHOW SUCCESS POPUP =====
+            if (isValid) {
+                // Put values in popup
+                document.getElementById('popupMobile').textContent = mobile;
+                document.getElementById('popupAmount').textContent = amount;
+                
+                // Show the popup
+                document.getElementById('successPopup').style.display = 'flex';
+                
+                // Reset the form
+                this.reset();
+            } else {
+                // If not valid, scroll to first error
+                const firstError = document.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+
+        // ========== CLOSE POPUP FUNCTION =

@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+nav{
+    background-color: purple;
+}
+ul{
+    list-style-type: none;
+    text-align: right;
+    padding: 20px;
+}
+li{
+    display: inline;
+    padding: 4px;
+}
+a{
+    text-decoration: none;
+    color: white;
+
+}
+a:hover{
+    color: rgb(147,165,42);
+}

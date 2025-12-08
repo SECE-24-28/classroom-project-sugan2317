@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Recharge App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login/Register Page -->
+    <div id="loginPage" class="page active">
+        <!-- Blurred hero background with profile image -->
+        <div class="hero-background" id="heroBackground"></div>
+        
+        <div class="login-container">
+            <!-- Circular profile image -->
+            <div class="profile-image-container">
+                <img id="profileImage" src="assets/user-photo.jpg" alt="Profile" class="profile-image">
+            </div>
+
+            <!-- Tabs: Login / Register -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="loginTab" onclick="switchTab('loginTab')">
+                    <span class="icon">🔓</span> Login
+                </button>
+                <button class="tab-btn" data-tab="registerTab" onclick="switchTab('registerTab')">
+                    <span class="icon">📝</span> Register
+                </button>
+            </div>
+
+            <!-- Login Tab -->
+            <div id="loginTab" class="tab-content active">
+                <h2>Login</h2>
+
+                <!-- Login Mode Tabs -->
+                <div class="login-mode-tabs">
+                    <button class="mode-btn active" data-mode="pin" onclick="switchLoginMode('pin')">
+                        <span class="icon">🔐</span> PIN Login
+                    </button>
+                    <button class="mode-btn" data-mode="otp" onclick="switchLoginMode('otp')">
+                        <span class="icon">📱</span> OTP
+                    </button>
+                </div>
+
+                <!-- PIN Login Form -->
+                <div id="pinLoginForm" class="login-form active">
+                    <div class="form-group">
+                        <label for="loginMobile">Mobile Number</label>
+                        <input type="text" id="loginMobile" placeholder="Enter 10-digit number" maxlength="10" class="large-input">
+                        <span id="loginMobileError" class="error-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPin">PIN (4 digits)</label>
+                        <input type="password" id="loginPin" placeholder="Enter 4-digit PIN" maxlength="4" class="large-input numeric-input">
+                        <span id="loginPinError" class="error-message"></span>
+                    </div>
+
+                    <!-- Numeric Keypad for PIN entry (accessibility) -->
+                    <div class="numeric-keypad" id="numericKeypad">
+                        <button onclick="appendDigit('1', 'loginPin')">1</button>
+                        <button onclick="appendDigit('2', 'loginPin')">2</button>
+                        <button onclick="appendDigit('3', 'loginPin')">3</button>
+                        <button onclick="appendDigit('4', 'loginPin')">4</button>
+                        <button onclick="appendDigit('5', 'loginPin')">5</button>
+                        <button onclick="appendDigit('6', 'loginPin')">6</button>
+                        <button onclick="appendDigit('7', 'loginPin')">7</button>
+                        <button onclick="appendDigit('8', 'loginPin')">8</button>
+                        <button onclick="appendDigit('9', 'loginPin')">9</button>
+                        <button onclick="appendDigit('0', 'loginPin')">0</button>
+                        <button onclick="deleteLastDigit('loginPin')" class="delete-btn">⌫</button>
+                        <button onclick="clearInput('loginPin')" class="clear-btn">C</button>
+                    </div>
+
+                    <button onclick="handleLogin()" class="btn-primary large-btn">Login</button>
+                </div>
+
+                <!-- OTP Login Form -->
+                <div id="otpLoginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="otpMobile">Mobile Number</label>
+                        <input type="text" id="otpMobile" placeholder="Enter 10-digit number" maxlength="10" class="large-input">
+                        <span id="otpMobileError" class="error-message"></span>
+                    </div>
+
+                    <button onclick="generateOtp()" class="btn-secondary large-btn">Get OTP</button>
+
+                    <!-- OTP Display (demo purposes) -->
+                    <div id="otpDisplay" class="otp-display hidden">
+                        <p>Your OTP: <strong id="otpValue"></strong></p>
+                    </div>
+
+                    <div class="form-group" id="otpInputGroup" class="hidden">
+                        <label for="otpCode">Enter OTP</label>
+                        <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" maxlength="6" class="large-input">
+                        <span id="otpError" class="error-message"></span>
+                    </div>
+
+                    <button id="verifyOtpBtn" onclick="verifyOtp()" class="btn-primary large-btn hidden">Verify OTP</button>
+                </div>
+            </div>
+
+            <!-- Register Tab -->
+            <div id="registerTab" class="tab-content">
+                <h2>Register</h2>
+
+                <div class="form-group">
+                    <label for="registerMobile">Mobile Number</label>
+                    <input type="text" id="registerMobile" placeholder="Enter 10-digit number" maxlength="10" class="large-input">
+                    <span id="registerMobileError" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerOperator">Operator (Optional)</label>
+                    <select id="registerOperator" class="large-input">
+                        <option value="">Select Operator</option>
+                        <option value="airtel">🟠 Airtel</option>
+                        <option value="jio">🔵 Jio</option>
+                        <option value="vi">🔴 Vi</option>
+                        <option value="bsnl">🟡 BSNL</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPin">Set 4-Digit PIN</label>
+                    <input type="password" id="registerPin" placeholder="Create 4-digit PIN" maxlength="4" class="large-input numeric-input">
+                    <span id="registerPinError" class="error-message"></span>
+                </div>
+
+                <!-- Numeric Keypad for PIN entry -->
+                <div class="numeric-keypad" id="registerKeypad">
+                    <button onclick="appendDigit('1', 'registerPin')">1</button>
+                    <button onclick="appendDigit('2', 'registerPin')">2</button>
+                    <button onclick="appendDigit('3', 'registerPin')">3</button>
+                    <button onclick="appendDigit('4', 'registerPin')">4</button>
+                    <button onclick="appendDigit('5', 'registerPin')">5</button>
+                    <button onclick="appendDigit('6', 'registerPin')">6</button>
+                    <button onclick="appendDigit('7', 'registerPin')">7</button>
+                    <button onclick="appendDigit('8', 'registerPin')">8</button>
+                    <button onclick="appendDigit('9', 'registerPin')">9</button>
+                    <button onclick="appendDigit('0', 'registerPin')">0</button>
+                    <button onclick="deleteLastDigit('registerPin')" class="delete-btn">⌫</button>
+                    <button onclick="clearInput('registerPin')" class="clear-btn">C</button>
+                </div>
+
+                <button onclick="handleRegister()" class="btn-primary large-btn">Register</button>
+            </div>
+
+            <!-- Message Display -->
+            <div id="messageBox" class="message-box hidden"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <!-- Header with profile and logout -->
+        <div class="header">
+            <div class="header-content">
+                <img id="headerProfileImage" src="assets/user-photo.jpg" alt="Profile" class="header-profile-image">
+                <div class="header-info">
+                    <p class="mobile-display" id="mobileDisplay">9876543210</p>
+                    <p class="balance-display" id="balanceDisplay">₹500</p>
+                </div>
+            </div>
+            <div class="header-controls">
+                <button onclick="toggleVoice()" class="btn-voice" title="Toggle voice guidance">
+                    <span id="voiceIcon">🔊</span>
+                </button>
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div class="dashboard-container">
+            <!-- Welcome Message -->
+            <div class="welcome-section">
+                <h2>Welcome back!</h2>
+                <p id="welcomeMessage">Tap recharge to top up</p>
+            </div>
+
+            <!-- SIM Card Tile -->
+            <div class="dashboard-tile sim-tile">
+                <div class="tile-icon">📱</div>
+                <div class="tile-content">
+                    <h3>Your SIM</h3>
+                    <p id="operatorDisplay" class="operator-name">Airtel</p>
+                    <div class="sim-details">
+                        <span id="lastRechargeDisplay">Last: ₹199</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Tiles -->
+            <div class="tiles-grid">
+                <!-- Recharge Tile -->
+                <div class="dashboard-tile action-tile" onclick="goToPage('rechargePage')">
+                    <div class="tile-icon">💰</div>
+                    <p>Recharge</p>
+                </div>
+
+                <!-- Plans Tile -->
+                <div class="dashboard-tile action-tile" onclick="goToPage('plansPage')">
+                    <div class="tile-icon">📋</div>
+                    <p>Plans</p>
+                </div>
+
+                <!-- Wallet Tile -->
+                <div class="dashboard-tile action-tile" onclick="goToPage('walletPage')">
+                    <div class="tile-icon">💳</div>
+                    <p>Wallet</p>
+                </div>
+
+                <!-- History Tile -->
+                <div class="dashboard-tile action-tile" onclick="goToPage('historyPage')">
+                    <div class="tile-icon">📜</div>
+                    <p>History</p>
+                </div>
+            </div>
+
+            <!-- Recent Recharge History -->
+            <div class="history-section">
+                <h3>Recent Recharges</h3>
+                <div id="recentHistory" class="history-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recharge Page -->
+    <div id="rechargePage" class="page">
+        <div class="page-header">
+            <button onclick="goToPage('dashboardPage')" class="btn-back">← Back</button>
+            <h2>Recharge</h2>
+        </div>
+
+        <div class="recharge-container">
+            <div class="form-group">
+                <label for="rechargeMobile">Mobile Number</label>
+                <input type="text" id="rechargeMobile" class="large-input" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="rechargeOperator">Operator</label>
+                <input type="text" id="rechargeOperator" class="large-input" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="rechargeAmount">Amount (₹)</label>
+                <input type="number" id="rechargeAmount" placeholder="Enter amount or select plan" class="large-input">
+                <span id="rechargeAmountError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Or Select a Plan:</label>
+                <div id="quickPlans" class="quick-plans-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <button onclick="goToPage('paymentPage')" class="btn-primary large-btn">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <!-- Plans Page -->
+    <div id="plansPage" class="page">
+        <div class="page-header">
+            <button onclick="goToPage('dashboardPage')" class="btn-back">← Back</button>
+            <h2>Recharge Plans</h2>
+        </div>
+
+        <div class="plans-container">
+            <!-- Operator Filter -->
+            <div class="operator-filter">
+                <label>Filter by Operator:</label>
+                <div class="operator-buttons">
+                    <button class="op-btn active" data-operator="all" onclick="filterPlansByOperator('all')">All</button>
+                    <button class="op-btn" data-operator="airtel" onclick="filterPlansByOperator('airtel')">🟠 Airtel</button>
+                    <button class="op-btn" data-operator="jio" onclick="filterPlansByOperator('jio')">🔵 Jio</button>
+                    <button class="op-btn" data-operator="vi" onclick="filterPlansByOperator('vi')">🔴 Vi</button>
+                    <button class="op-btn" data-operator="bsnl" onclick="filterPlansByOperator('bsnl')">🟡 BSNL</button>
+                </div>
+            </div>
+
+            <!-- Plans Grid -->
+            <div id="plansGrid" class="plans-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div id="paymentPage" class="page">
+        <div class="page-header">
+            <button onclick="goToPage('dashboardPage')" class="btn-back">← Back</button>
+            <h2>Payment</h2>
+        </div>
+
+        <div class="payment-container">
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-item">
+                    <span>Mobile:</span>
+                    <strong id="summaryMobile">-</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Operator:</span>
+                    <strong id="summaryOperator">-</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Plan/Amount:</span>
+                    <strong id="summaryAmount">₹0</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Available Balance:</span>
+                    <strong id="summaryBalance">₹0</strong>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-item total">
+                    <span>Total:</span>
+                    <strong id="summaryTotal">₹0</strong>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <h3>Payment Method</h3>
+                <div class="method-options">
+                    <label class="method-option active">
+                        <input type="radio" name="paymentMethod" value="wallet" checked>
+                        <span class="method-icon">💳</span>
+                        <span class="method-name">Wallet</span>
+                    </label>
+                    <label class="method-option">
+                        <input type="radio" name="paymentMethod" value="upi">
+                        <span class="method-icon">📱</span>
+                        <span class="method-name">UPI (Mock)</span>
+                    </label>
+                    <label class="method-option">
+                        <input type="radio" name="paymentMethod" value="card">
+                        <span class="method-icon">💰</span>
+                        <span class="method-name">Card (Mock)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Confirm Payment Button -->
+            <button id="confirmPaymentBtn" onclick="processPayment()" class="btn-primary large-btn">
+                Confirm Payment
+            </button>
+
+            <!-- Error Message -->
+            <div id="paymentError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Wallet Page -->
+    <div id="walletPage" class="page">
+        <div class="page-header">
+            <button onclick="goToPage('dashboardPage')" class="btn-back">← Back</button>
+            <h2>Wallet</h2>
+        </div>
+
+        <div class="wallet-container">
+            <div class="wallet-balance">
+                <h3>Current Balance</h3>
+                <div class="balance-amount" id="walletBalance">₹500</div>
+            </div>
+
+            <div class="add-money-section">
+                <h3>Add Money</h3>
+                <div class="form-group">
+                    <label for="addAmount">Amount (₹)</label>
+                    <input type="number" id="addAmount" placeholder="Enter amount" class="large-input" min="10" max="50000">
+                </div>
+                <button onclick="addMoney()" class="btn-primary large-btn">Add Money</button>
+            </div>
+
+            <div class="transaction-history">
+                <h3>Transaction History</h3>
+                <div id="transactionList" class="history-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Page -->
+    <div id="historyPage" class="page">
+        <div class="page-header">
+            <button onclick="goToPage('dashboardPage')" class="btn-back">← Back</button>
+            <h2>Recharge History</h2>
+        </div>
+
+        <div class="history-container">
+            <div id="fullHistory" class="history-list">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div id="successPopup" class="popup hidden">
+        <div class="popup-content">
+            <div class="popup-icon">✅</div>
+            <h3 id="popupTitle">Success!</h3>
+            <p id="popupMessage">Your recharge was successful</p>
+            <div class="popup-details" id="popupDetails"></div>
+            <button onclick="closeSuccessPopup()" class="btn-primary">OK</button>
+        </div>
+    </div>
+
+    <!-- Processing Overlay -->
+    <div id="processingOverlay" class="processing-overlay hidden">
+        <div class="processing-content">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settingsPanel" class="settings-panel hidden">
+        <div class="settings-content">
+            <h3>Settings</h3>
+            <div class="setting-item">
+                <label>Font Size</label>
+                <input type="range" id="fontSizeSlider" min="100" max="150" value="100" step="10" onchange="changeFontSize(this.value)">
+            </div>
+            <div class="setting-item">
+                <label>Voice Guidance</label>
+                <input type="checkbox" id="voiceToggle" checked onchange="toggleVoiceGuidance()">
+            </div>
+            <button onclick="closeSettings()" class="btn-secondary">Close</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

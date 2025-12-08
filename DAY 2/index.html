@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-main h-screen w-full flex items-center justify-center">
+  <div class="glass-card w-[360px] p-8 shadow-2xl">
+
+    <h1 class="text-center text-gray-200 text-2xl tracking-widest mb-4">
+      WELCOME
+    </h1>
+
+    <hr class="border-gray-600 mb-6" />
+
+    <div class="mb-4">
+      <label class="block text-gray-300 text-sm mb-1">Username</label>
+      <div class="flex items-center bg-black/30 rounded-lg px-3">
+        <span class="text-gray-400 pr-2">👤</span>
+        <input
+          type="text"
+          class="w-full bg-transparent text-gray-200 py-2 outline-none"
+        />
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-300 text-sm mb-1">Password</label>
+      <div class="flex items-center bg-black/30 rounded-lg px-3">
+        <span class="text-gray-400 pr-2">🔒</span>
+        <input
+          type="password"
+          class="w-full bg-transparent text-gray-200 py-2 outline-none"
+        />
+      </div>
+    </div>
+
+    <div class="flex justify-between items-center text-sm mb-5">
+      <label class="text-gray-300 flex items-center gap-1">
+        <input type="checkbox" class="accent-pink-500" />
+        Remember me
+      </label>
+      <a href="#" class="text-gray-400 hover:text-pink-300">Forgot Password?</a>
+    </div>
+
+    <button class="w-full py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg shadow-lg transition">
+      LOGIN
+    </button>
+
+  </div>
+</body>
+</html>
